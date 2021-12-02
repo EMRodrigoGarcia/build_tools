@@ -20,13 +20,17 @@ def install_deps():
   if base.is_file("./packages_complete"):
     return
 
-  base.cmd("sudo", ["yum", "install", "-y"] + "dnf-plugins-core")
-  base.cmd("sudo", ["yum", "config-manager", "--set-enabled"] + "powertools")
+  base.cmd("sudo", ["yum", "install", "-y"] + ["dnf-plugins-core"])
+  base.cmd("sudo", ["yum", "config-manager", "--set-enabled"] + ["powertools"])
+  base.cmd("sudo", ["yum", "groupinstall", "Development tools"])
 
 
 
   # dependencies
   packages = ["epel-release",
+              "gcc-c++",
+              "gstreamer*",
+              "mesa-libGL-devel",
               "autoconf.noarch",
               "cmake",
               "curl",
@@ -45,13 +49,13 @@ def install_deps():
               "libdbus*",
               "libicu*",
               "libglu*",
-              "libgstreamer*",
+              "gstreamer1-devel",
               #"libgstreamer-plugins-base1.0-dev",
-#              "libx11-xcb-dev",
+              "libX11-xcb-dev",
               "libxcb*",
               "libxi*",
               "libXrender*",
-              #"libxss1",
+              "libXScrnSaver",
               "libncurses*"]
 
   base.cmd("sudo", ["yum", "install", "-y"] + packages)
@@ -80,14 +84,15 @@ def install_deps():
     base.cmd("sudo", ["npm", "install", "-g", "npm@6"])
   else:
     print("OK")
-    base.cmd("sudo", ["yum", "-y", "install", "npm", "yarn"], True)
+    base.cmd("sudo", ["yum", "-y", "install", "npm"], True)
+  base.cmd("sudo", ["npm", "install", "-g", "yarn"])
   base.cmd("sudo", ["npm", "install", "-g", "grunt-cli"])
   base.cmd("sudo", ["npm", "install", "-g", "pkg"])
 
   # java
-  java_error = base.cmd("sudo", ["yum", "-y", "install", "openjdk-11-jdk"], True)
+  java_error = base.cmd("sudo", ["yum", "-y", "install", "java-11-openjdk"], True)
   if (0 != java_error):
-    java_error = base.cmd("sudo", ["yum", "-y", "install", "openjdk-8-jdk"], True)
+    java_error = base.cmd("sudo", ["yum", "-y", "install", "java-1.8.0-openjdk"], True)
   if (0 != java_error):
     base.cmd("sudo", ["yum", "-y", "install", "software-properties-common"])
     base.cmd("sudo", ["add-apt-repository", "-y", "ppa:openjdk-r/ppa"])
@@ -121,7 +126,7 @@ def install_qt():
                "-qt-pcre",
                "-no-sql-sqlite",
                "-no-qml-debug",
-               "-gstreamer", "1.0",
+#               "-gstreamer", "1.0",
                "-nomake", "examples",
                "-nomake", "tests",
                "-skip", "qtenginio",
