@@ -20,36 +20,39 @@ def install_deps():
   if base.is_file("./packages_complete"):
     return
 
+  base.cmd("sudo", ["yum", "install", "-y"] + "dnf-plugins-core")
+  base.cmd("sudo", ["yum", "config-manager", "--set-enabled"] + "powertools")
+
+
+
   # dependencies
-  packages = ["apt-transport-https", 
-              "autoconf2.13",
-              "build-essential",
-              "ca-certificates",
+  packages = ["epel-release",
+              "autoconf.noarch",
               "cmake",
               "curl",
               "git",
-              "glib-2.0-dev",
-              "libglu1-mesa-dev",
-              "libgtk-3-dev",
-              "libpulse-dev",
+              "glib*",
+              "libglu*",
+              "libgtk*",
+              "libpulse*",
               "libtool",
-              "p7zip-full",
+              "p7zip",
               "subversion",
               "gzip",
-              "libasound2-dev",
-              "libatspi2.0-dev",
-              "libcups2-dev",
-              "libdbus-1-dev",
-              "libicu-dev",
-              "libglu1-mesa-dev",
-              "libgstreamer1.0-dev",
-              "libgstreamer-plugins-base1.0-dev",
-              "libx11-xcb-dev",
+              "libasound*",
+              "libatspi*",
+              "libcups*",
+              "libdbus*",
+              "libicu*",
+              "libglu*",
+              "libgstreamer*",
+              #"libgstreamer-plugins-base1.0-dev",
+#              "libx11-xcb-dev",
               "libxcb*",
-              "libxi-dev",
-              "libxrender-dev",
-              "libxss1",
-              "libncurses5"]
+              "libxi*",
+              "libXrender*",
+              #"libxss1",
+              "libncurses*"]
 
   base.cmd("sudo", ["yum", "install", "-y"] + packages)
 
