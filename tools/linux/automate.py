@@ -51,10 +51,10 @@ def install_deps():
               "libxss1",
               "libncurses5"]
 
-  base.cmd("sudo", ["apt-get", "install", "-y"] + packages)
+  base.cmd("sudo", ["yum", "install", "-y"] + packages)
 
   # nodejs
-  base.cmd("sudo", ["apt-get", "install", "-y", "nodejs"])
+  base.cmd("sudo", ["yum", "install", "-y", "nodejs"])
   nodejs_cur = 0
   try:
     nodejs_version = base.run_command('node -v')['stdout']
@@ -69,27 +69,27 @@ def install_deps():
     print("Reinstall")
     if (base.is_dir("./node_js_setup_10.x")):
       base.delete_dir("./node_js_setup_10.x")
-    base.cmd("sudo", ["apt-get", "remove", "--purge", "-y", "nodejs"])
+    base.cmd("sudo", ["yum", "remove", "--purge", "-y", "nodejs"])
     base.download("https://deb.nodesource.com/setup_10.x", "./node_js_setup_10.x")
     base.cmd('curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -')
     base.cmd("sudo", ["bash", "./node_js_setup_10.x"])
-    base.cmd("sudo", ["apt-get", "install", "-y", "nodejs"])
+    base.cmd("sudo", ["yum", "install", "-y", "nodejs"])
     base.cmd("sudo", ["npm", "install", "-g", "npm@6"])
   else:
     print("OK")
-    base.cmd("sudo", ["apt-get", "-y", "install", "npm", "yarn"], True)
+    base.cmd("sudo", ["yum", "-y", "install", "npm", "yarn"], True)
   base.cmd("sudo", ["npm", "install", "-g", "grunt-cli"])
   base.cmd("sudo", ["npm", "install", "-g", "pkg"])
 
   # java
-  java_error = base.cmd("sudo", ["apt-get", "-y", "install", "openjdk-11-jdk"], True)
+  java_error = base.cmd("sudo", ["yum", "-y", "install", "openjdk-11-jdk"], True)
   if (0 != java_error):
-    java_error = base.cmd("sudo", ["apt-get", "-y", "install", "openjdk-8-jdk"], True)
+    java_error = base.cmd("sudo", ["yum", "-y", "install", "openjdk-8-jdk"], True)
   if (0 != java_error):
-    base.cmd("sudo", ["apt-get", "-y", "install", "software-properties-common"])
+    base.cmd("sudo", ["yum", "-y", "install", "software-properties-common"])
     base.cmd("sudo", ["add-apt-repository", "-y", "ppa:openjdk-r/ppa"])
-    base.cmd("sudo", ["apt-get", "update"])
-    base.cmd("sudo", ["apt-get", "-y", "install", "openjdk-8-jdk"])
+    base.cmd("sudo", ["yum", "update"])
+    base.cmd("sudo", ["yum", "-y", "install", "openjdk-8-jdk"])
     base.cmd("sudo", ["update-alternatives", "--config", "java"])
     base.cmd("sudo", ["update-alternatives", "--config", "javac"])
     
